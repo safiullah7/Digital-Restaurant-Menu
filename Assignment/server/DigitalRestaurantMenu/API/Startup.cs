@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MediatR;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 
 namespace API
 {
@@ -31,7 +32,10 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(cfg => {
+                    cfg.RegisterValidatorsFromAssemblyContaining<Application.Dishes.Create>();
+                });
             services.AddMediatR(typeof(Application.Dishes.List.Handler).Assembly);
             // services.AddSwaggerGen(c =>
             // {

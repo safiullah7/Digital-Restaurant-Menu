@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.models;
 using Domain.repository.repositories.interfaces;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Dishes
@@ -20,6 +21,17 @@ namespace Application.Dishes
             public int PreparationTime { get; set; }
         }
 
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Name).NotEmpty().NotNull();
+                RuleFor(x => x.Category).NotEmpty().NotNull();
+                RuleFor(x => x.Availability).NotEmpty().NotNull();
+                RuleFor(x => x.PreparationTime).NotEmpty().NotNull();
+            }
+        }
+
         public class Handler : IRequestHandler<Command>
         {
             private readonly IDishRepository context;
@@ -33,7 +45,6 @@ namespace Application.Dishes
 
             async Task<Unit> IRequestHandler<Command, Unit>.Handle(Command request, CancellationToken cancellationToken)
             {
-                // TODO: Add AutoMapper
                 // TODO: Add custom exception handler
                 
                 var dish = _mapper.Map<Command, Dish>(request);
