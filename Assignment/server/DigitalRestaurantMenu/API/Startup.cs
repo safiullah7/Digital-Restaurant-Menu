@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using MediatR;
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using Shared;
 
 namespace API
 {
@@ -42,10 +43,7 @@ namespace API
             //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             // });
             services.AddScoped<IMongoDRMDbContext, MongoDRMDbContext>(serviceProvider =>
-                new MongoDRMDbContext(
-                    "mongodb://127.0.0.1:27017",
-                    "DigitalRestaurantMenu")
-                
+                new MongoDRMDbContext(Constants.MongoUrl, Constants.DatabaseName)
             );
             services.AddAutoMapper(typeof(Application.Dishes.List.Handler));
             services.AddScoped<IDishRepository, DishRepository>();

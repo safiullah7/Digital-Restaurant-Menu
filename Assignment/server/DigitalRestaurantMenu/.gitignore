@@ -5,3 +5,5 @@ Application/bin
 Application/obj
 Domain/bin
 Domain/obj
+Shared/bin
+Shared/obj
