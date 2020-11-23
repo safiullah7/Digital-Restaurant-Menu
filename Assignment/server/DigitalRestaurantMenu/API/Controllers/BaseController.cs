@@ -11,5 +11,10 @@ namespace API.Controllers
         private IMediator _mediator;
         protected IMediator Mediator => _mediator ?? 
             (_mediator = HttpContext.RequestServices.GetService<IMediator>());
+
+        public void SetMediatrForTest(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
     }
 }

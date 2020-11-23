@@ -16,7 +16,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseWrapper<Create>> Create(Create.Command command)
+        public async Task<ActionResult<ResponseWrapper<Create>>> Create(Create.Command command)
         {
             return await Mediator.Send(command);
         }
@@ -28,20 +28,20 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ResponseWrapper<Edit>> Edit(string id, Edit.Command command)
+        public async Task<ActionResult<ResponseWrapper<Edit>>> Edit(string id, Edit.Command command)
         {
             command.Id = id;
             return await Mediator.Send(command);
         }
 
         [HttpPut("{id}/{active}")]
-        public async Task<ResponseWrapper<SetActive>> SetActive(string id, bool active)
+        public async Task<ActionResult<ResponseWrapper<SetActive>>> SetActive(string id, bool active)
         {
             return await Mediator.Send(new SetActive.Command{Id = id, Active = active});
         }
 
         [HttpDelete("{id}")]
-        public async Task<ResponseWrapper<Delete>> Delete(string id)
+        public async Task<ActionResult<ResponseWrapper<Delete>>> Delete(string id)
         {
             return await Mediator.Send(new Delete.Command{Id = id});
         }
