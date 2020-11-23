@@ -7,6 +7,7 @@ using Domain.models;
 using Domain.repository.repositories.interfaces;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Dishes
 {
@@ -37,9 +38,11 @@ namespace Application.Dishes
         {
             private readonly IDishRepository context;
             private readonly IMapper _mapper;
+            private readonly ILogger<Create> _logger;
 
-            public Handler(IDishRepository context, IMapper mapper)
+            public Handler(IDishRepository context, IMapper mapper, ILogger<Create> logger)
             {
+                this._logger = logger;
                 this._mapper = mapper;
                 this.context = context;
             }
@@ -52,11 +55,13 @@ namespace Application.Dishes
                 try
                 {
                     await context.Create(dish);
+                    _logger.LogInformation("Successfully created the dish");
                     var responseWrapper = ResponseWrapper<Create>.GetInstance((int)HttpStatusCode.OK, null, true, null);
                     return responseWrapper;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Problem saving new dish");
                     throw new Exception("Problem saving new dish");
                 }
             }

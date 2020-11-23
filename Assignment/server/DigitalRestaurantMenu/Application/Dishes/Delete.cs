@@ -5,6 +5,7 @@ using Domain.repository.repositories.interfaces;
 using MediatR;
 using Domain.models;
 using System.Net;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Dishes
 {
@@ -18,8 +19,10 @@ namespace Application.Dishes
         public class Handler : IRequestHandler<Command, ResponseWrapper<Delete>>
         {
             private readonly IDishRepository _context;
-            public Handler(IDishRepository context)
+            private readonly ILogger<Delete> _logger;
+            public Handler(IDishRepository context, ILogger<Delete> logger)
             {
+                this._logger = logger;
                 this._context = context;
             }
 
@@ -28,11 +31,13 @@ namespace Application.Dishes
                 try
                 {
                     await _context.Delete(request.Id);
+                    _logger.LogInformation("Successfully deleted the dish");
                     var responseWrapper = ResponseWrapper<Delete>.GetInstance((int)HttpStatusCode.OK, null, true, null);
                     return responseWrapper;
                 }
-                catch(Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Problem deleting the dish");
                     throw new Exception("Problem deleting the dish");
                 }
             }

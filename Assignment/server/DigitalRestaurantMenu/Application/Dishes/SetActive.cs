@@ -7,6 +7,7 @@ using Application.Errors;
 using Domain.models;
 using Domain.repository.repositories.interfaces;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Dishes
 {
@@ -21,8 +22,10 @@ namespace Application.Dishes
         public class Handler : IRequestHandler<Command, ResponseWrapper<SetActive>>
         {
             private readonly IDishRepository _context;
-            public Handler(IDishRepository context)
+            private readonly ILogger<SetActive> _logger;
+            public Handler(IDishRepository context, ILogger<SetActive> logger)
             {
+                this._logger = logger;
                 this._context = context;
             }
 
@@ -38,9 +41,10 @@ namespace Application.Dishes
                     var responseWrapper = ResponseWrapper<SetActive>.GetInstance((int)HttpStatusCode.OK, null, true, null);
                     return responseWrapper;
                 }
-                catch(Exception)
+                catch (Exception ex)
                 {
-                    throw new Exception("Problem saving new dish");
+                    _logger.LogError(ex, "Problem setting the active status of the dish");
+                    throw new Exception("Problem setting the active status of the dish");
                 }
             }
         }
