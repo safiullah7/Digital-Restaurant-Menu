@@ -46,8 +46,6 @@ namespace Application.Dishes
 
             async Task<ResponseWrapper<Create>> IRequestHandler<Command, ResponseWrapper<Create>>.Handle(Command request, CancellationToken cancellationToken)
             {
-                // TODO: Add custom exception handler
-                
                 var dish = _mapper.Map<Command, Dish>(request);
                 dish.CreatedAt = DateTime.Now;
                 dish.UpdatedAt = DateTime.Now;

@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using AutoMapper;
 using Domain.models;
 using Domain.repository.repositories.interfaces;
@@ -37,9 +38,8 @@ namespace Application.Dishes
             {
                 var dishFromDb = await _context.Get(request.Id);
                 if (dishFromDb == null)
-                {
-                    //TODO REST exception
-                }
+                    throw new RestException(HttpStatusCode.NotFound, "No dish found with this Id");
+                    
                 var dish = _mapper.Map<Command, Dish>(request);
                 dish.UpdatedAt = DateTime.Now;
                 dish.CreatedAt = dishFromDb.CreatedAt;
