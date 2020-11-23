@@ -9,7 +9,7 @@ namespace API.Controllers
     public class DishesController: BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Dish>>> List()
+        public async Task<ActionResult<ResponseWrapper<List<DishDto>>>> List()
         {
             return await Mediator.Send(new List.Query());
         }
