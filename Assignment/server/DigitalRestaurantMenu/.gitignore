@@ -1,4 +1,5 @@
 .vscode
+.vs
 API/bin
 API/obj
 Application/bin
