@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain.models;
 using Domain.repository.repositories.interfaces;
 using MediatR;
+using System.Net;
 
 namespace Application.Dishes
 {

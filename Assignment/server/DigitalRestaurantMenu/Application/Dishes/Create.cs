@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -11,7 +12,7 @@ namespace Application.Dishes
 {
     public class Create
     {
-        public class Command : IRequest
+        public class Command : IRequest<ResponseWrapper<Create>>
         {
             public string Name { get; set; }
             public decimal Price { get; set; }
@@ -32,7 +33,7 @@ namespace Application.Dishes
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, ResponseWrapper<Create>>
         {
             private readonly IDishRepository context;
             private readonly IMapper _mapper;
@@ -43,7 +44,7 @@ namespace Application.Dishes
                 this.context = context;
             }
 
-            async Task<Unit> IRequestHandler<Command, Unit>.Handle(Command request, CancellationToken cancellationToken)
+            async Task<ResponseWrapper<Create>> IRequestHandler<Command, ResponseWrapper<Create>>.Handle(Command request, CancellationToken cancellationToken)
             {
                 // TODO: Add custom exception handler
                 
@@ -53,7 +54,8 @@ namespace Application.Dishes
                 try
                 {
                     await context.Create(dish);
-                    return Unit.Value;
+                    var responseWrapper = ResponseWrapper<Create>.GetInstance((int)HttpStatusCode.OK, null, true, null);
+                    return responseWrapper;
                 }
                 catch (Exception)
                 {

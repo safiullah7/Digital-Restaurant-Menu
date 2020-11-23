@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Application.Dishes;
 using System.Threading.Tasks;
 using Domain.models;
+using Application.Dishes.Dtos;
 
 namespace API.Controllers
 {
@@ -15,31 +16,32 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<MediatR.Unit> Create(Create.Command command)
+        public async Task<ResponseWrapper<Create>> Create(Create.Command command)
         {
             return await Mediator.Send(command);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Dish>> Details(string id)
+        public async Task<ActionResult<ResponseWrapper<DishDto>>> Details(string id)
         {
             return await Mediator.Send(new Details.Query{Id = id});
         }
 
         [HttpPut("{id}")]
-        public async Task<MediatR.Unit> Edit(Edit.Command command)
+        public async Task<ResponseWrapper<Edit>> Edit(string id, Edit.Command command)
         {
+            command.Id = id;
             return await Mediator.Send(command);
         }
 
         [HttpPut("{id}/{active}")]
-        public async Task<MediatR.Unit> SetActive(string id, bool active)
+        public async Task<ResponseWrapper<SetActive>> SetActive(string id, bool active)
         {
             return await Mediator.Send(new SetActive.Command{Id = id, Active = active});
         }
 
         [HttpDelete("{id}")]
-        public async Task<MediatR.Unit> Delete(string id)
+        public async Task<ResponseWrapper<Delete>> Delete(string id)
         {
             return await Mediator.Send(new Delete.Command{Id = id});
         }

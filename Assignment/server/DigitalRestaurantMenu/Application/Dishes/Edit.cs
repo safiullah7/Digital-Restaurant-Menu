@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,7 +11,7 @@ namespace Application.Dishes
 {
     public class Edit
     {
-        public class Command : IRequest
+        public class Command : IRequest<ResponseWrapper<Edit>>
         {
             public string Id { get; set; }
             public string Name { get; set; }
@@ -21,7 +22,7 @@ namespace Application.Dishes
             public int PreparationTime { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, ResponseWrapper<Edit>>
         {
             private readonly IDishRepository _context;
             private readonly IMapper _mapper;
@@ -32,7 +33,7 @@ namespace Application.Dishes
                 _context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<ResponseWrapper<Edit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var dishFromDb = await _context.Get(request.Id);
                 if (dishFromDb == null)
@@ -46,8 +47,8 @@ namespace Application.Dishes
                 try
                 {
                     await _context.Update(request.Id, dish);
-                    return Unit.Value;
-                    // TODO generic response
+                    var responseWrapper = ResponseWrapper<Edit>.GetInstance((int)HttpStatusCode.OK, null, true, null);
+                    return responseWrapper;
                 }
                 catch (Exception)
                 {
