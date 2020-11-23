@@ -48,10 +48,6 @@ namespace Test.UnitTests
         [Fact]
         public void GetDishById_Success_Result()
         {
-            var getDishesRequestModel = new Details.Query();
-            Mediator.Setup(x => x.Send(It.IsAny<Details.Query>(), new CancellationToken())).
-                ReturnsAsync(ResponseWrapper<DishDto>.GetInstance((int)HttpStatusCode.OK, null, true, null));
-
             var dishesController = new DishesController();
             dishesController.SetMediatrForTest(Mediator.Object);
 
