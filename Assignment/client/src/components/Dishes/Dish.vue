@@ -1,18 +1,16 @@
 <template>
-  <div class="card" :style="myStyle">
-        <div class="card-content">
-            <div class="media">
-                <div class="media-content">
-                    <p class="title is-4">{{dish.name}}</p>
-                    <p class="subtitle is-6">@johnsmith</p>
-                </div>
-            </div>
-            <div class="content">
-                {{dish.description}}
-                <br>
-                <small>11:09 PM - 1 Jan 2016</small>
-            </div>
-        </div>
+  <div>
+    <b-card style="width: 500px;" :title="dish.name" align="center" sub-title="Card subtitle">
+        <b-card-text>
+            {{dish.description}}
+        </b-card-text>
+
+        <b-card-text>Price: {{dish.price}}</b-card-text>
+        <b-card-text>Category: {{dish.category}}</b-card-text>
+        <b-card-text>Availability: {{dish.availability}}</b-card-text>
+        <b-card-text>Active: {{dish.active}}</b-card-text>
+        <b-card-text>Created at: {{dish.createdAt}}</b-card-text>
+    </b-card>
     </div>
 </template>
 
