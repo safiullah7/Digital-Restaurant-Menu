@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div>
-      <b-button @click="setListMode(!listMode)" block variant="success">
-        {{listMode ? "Add Dish" : "Back"}}
-      </b-button>
+      <div @click="setListMode(!listMode)" class="buttons">
+            <b-button type="is-success" expanded>{{listMode ? "Add Dish" : "Back"}}</b-button>
+      </div>
     </div>
     <div v-if="listMode">
       <b-card-group deck>
