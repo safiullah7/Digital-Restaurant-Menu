@@ -15,6 +15,12 @@ namespace Test.UnitTests
 {
     public class DishesControllerTest: BaseControllerTest
     {
+        DishesController DishesController;
+        public DishesControllerTest()
+        {
+            DishesController = new DishesController();
+        }
+
         [Fact]
         public void CreateNewDish_Success_Result()
         {
@@ -22,11 +28,10 @@ namespace Test.UnitTests
             Mediator.Setup(x => x.Send(It.IsAny<Create.Command>(), new CancellationToken())).
                 ReturnsAsync(ResponseWrapper<Create>.GetInstance((int)HttpStatusCode.OK, null, true, null));
 
-            var dishesController = new DishesController();
-            dishesController.SetMediatrForTest(Mediator.Object);
+            DishesController.SetMediatrForTest(Mediator.Object);
 
             //Action
-            var result = dishesController.Create(createNewDishRequestModel);
+            var result = DishesController.Create(createNewDishRequestModel);
 
             //Assert
             Assert.IsType<Task<ActionResult<ResponseWrapper<Create>>>>(result);
@@ -35,11 +40,10 @@ namespace Test.UnitTests
         [Fact]
         public void GetDishes_Success_Result()
         {
-            var dishesController = new DishesController();
-            dishesController.SetMediatrForTest(Mediator.Object);
+            DishesController.SetMediatrForTest(Mediator.Object);
 
             //Action
-            var result = dishesController.List();
+            var result = DishesController.List();
 
             //Assert
             Assert.IsType<Task<ActionResult<ResponseWrapper<List<DishDto>>>>>(result);
@@ -48,11 +52,10 @@ namespace Test.UnitTests
         [Fact]
         public void GetDishById_Success_Result()
         {
-            var dishesController = new DishesController();
-            dishesController.SetMediatrForTest(Mediator.Object);
+            DishesController.SetMediatrForTest(Mediator.Object);
 
             //Action
-            var result = dishesController.Details(new ObjectId().ToString());
+            var result = DishesController.Details(new ObjectId().ToString());
 
             //Assert
             Assert.IsType<Task<ActionResult<ResponseWrapper<DishDto>>>>(result);
@@ -61,11 +64,10 @@ namespace Test.UnitTests
         [Fact]
         public void DeleteDishById_Success_Result()
         {
-            var dishesController = new DishesController();
-            dishesController.SetMediatrForTest(Mediator.Object);
+            DishesController.SetMediatrForTest(Mediator.Object);
 
             //Action
-            var result = dishesController.Delete(new ObjectId().ToString());
+            var result = DishesController.Delete(new ObjectId().ToString());
 
             //Assert
             Assert.IsType<Task<ActionResult<ResponseWrapper<Delete>>>>(result);
@@ -78,11 +80,10 @@ namespace Test.UnitTests
             Mediator.Setup(x => x.Send(It.IsAny<Edit.Command>(), new CancellationToken())).
                 ReturnsAsync(ResponseWrapper<Edit>.GetInstance((int)HttpStatusCode.OK, null, true, null));
 
-            var dishesController = new DishesController();
-            dishesController.SetMediatrForTest(Mediator.Object);
+            DishesController.SetMediatrForTest(Mediator.Object);
 
             //Action
-            var result = dishesController.Edit(new ObjectId().ToString(), getDishesRequestModel);
+            var result = DishesController.Edit(new ObjectId().ToString(), getDishesRequestModel);
 
             //Assert
             Assert.IsType<Task<ActionResult<ResponseWrapper<Edit>>>>(result);
@@ -91,11 +92,10 @@ namespace Test.UnitTests
         [Fact]
         public void SetDishActiveStatus_Success_Result()
         {
-            var dishesController = new DishesController();
-            dishesController.SetMediatrForTest(Mediator.Object);
+            DishesController.SetMediatrForTest(Mediator.Object);
 
             //Action
-            var result = dishesController.SetActive(new ObjectId().ToString(), false);
+            var result = DishesController.SetActive(new ObjectId().ToString(), false);
 
             //Assert
             Assert.IsType<Task<ActionResult<ResponseWrapper<SetActive>>>>(result);

@@ -32,5 +32,12 @@ namespace API.Controllers
         {
             return await Mediator.Send(new Details.Query{Id = id});
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ResponseWrapper<Edit>>> Edit(string id, Edit.Command command)
+        {
+            command.Id = id;
+            return await Mediator.Send(command);
+        }
     }
 }
