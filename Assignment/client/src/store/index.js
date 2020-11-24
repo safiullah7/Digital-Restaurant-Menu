@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import dishes from './modules/dishes';
+import categories from './modules/categories';
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
@@ -20,6 +21,7 @@ Vue.use(Buefy)
 //Create store
 export default new Vuex.Store({
     modules:{
-        dishes
+        dishes,
+        categories
     }
 });

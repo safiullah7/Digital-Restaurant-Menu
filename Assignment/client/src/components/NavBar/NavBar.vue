@@ -15,7 +15,7 @@
                 <b-navbar-item href="#">
                     Dishes
                 </b-navbar-item>
-                <b-navbar-item href="#">
+                <b-navbar-item @click="setListMode(!listMode)">
                     Add Dish
                 </b-navbar-item>
             </template>
@@ -24,8 +24,14 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
-    name: "NavBar"
+    name: "NavBar",
+    methods: {
+      ...mapActions(['setListMode'])
+    },
+    computed: mapGetters(['listMode'])
 }
 </script>
 
