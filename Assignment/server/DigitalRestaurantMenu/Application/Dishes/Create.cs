@@ -37,7 +37,7 @@ namespace Application.Dishes
 
         public class Handler : IRequestHandler<Command, ResponseWrapper<Create>>
         {
-            private readonly IDishRepository context;
+            private readonly IDishRepository _context;
             private readonly IMapper _mapper;
             private readonly ILogger<Create> _logger;
 
@@ -45,7 +45,7 @@ namespace Application.Dishes
             {
                 this._logger = logger;
                 this._mapper = mapper;
-                this.context = context;
+                this._context = context;
             }
 
             async Task<ResponseWrapper<Create>> IRequestHandler<Command, ResponseWrapper<Create>>.Handle(Command request, CancellationToken cancellationToken)
@@ -55,7 +55,7 @@ namespace Application.Dishes
                 dish.UpdatedAt = DateTime.Now;
                 try
                 {
-                    await context.Create(dish);
+                    await _context.Create(dish);
                     _logger.LogInformation("Successfully created the dish");
                     var responseWrapper = ResponseWrapper<Create>.GetInstance((int)HttpStatusCode.OK, null, true, null);
                     return responseWrapper;

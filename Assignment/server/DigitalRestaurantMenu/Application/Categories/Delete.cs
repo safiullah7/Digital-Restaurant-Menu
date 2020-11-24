@@ -1,14 +1,15 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
+using AutoMapper;
+using Domain.models;
 using Domain.repository.repositories.interfaces;
 using MediatR;
-using Domain.models;
-using System.Net;
 using Microsoft.Extensions.Logging;
-using Application.Errors;
 
-namespace Application.Dishes
+namespace Application.Categories
 {
     public class Delete
     {
@@ -19,32 +20,31 @@ namespace Application.Dishes
 
         public class Handler : IRequestHandler<Command, ResponseWrapper<Delete>>
         {
-            private readonly IDishRepository _context;
             private readonly ILogger<Delete> _logger;
-            public Handler(IDishRepository context, ILogger<Delete> logger)
+            private readonly ICategoryRepository _context;
+            public Handler(ICategoryRepository context, ILogger<Delete> logger)
             {
-                this._logger = logger;
                 this._context = context;
+                this._logger = logger;
             }
 
             public async Task<ResponseWrapper<Delete>> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var dish = await _context.Get(request.Id);
-
-                    if (dish == null)
-                        throw new RestException(HttpStatusCode.NotFound, "No dish found with this Id");
+                    var category = await _context.Get(request.Id);
+                    if (category == null)
+                        throw new RestException(HttpStatusCode.NotFound, "No category found with this Id");
                         
                     await _context.Delete(request.Id);
-                    _logger.LogInformation("Successfully deleted the dish");
+                    _logger.LogInformation("Successfully deleted the category");
                     var responseWrapper = ResponseWrapper<Delete>.GetInstance((int)HttpStatusCode.OK, null, true, null);
                     return responseWrapper;
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Problem deleting the dish");
-                    throw new Exception("Problem deleting the dish");
+                    _logger.LogError(ex, "Problem deleting the category");
+                    throw new Exception("Problem deleting the category");
                 }
             }
         }
